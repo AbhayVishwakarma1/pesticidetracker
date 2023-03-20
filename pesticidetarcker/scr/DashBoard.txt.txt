@@ -1,0 +1,156 @@
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.Date;
+
+public class DashBoard extends JFrame {
+
+    public DashBoard() {
+        setTitle("Pesticide Tracker");
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
+        int width = screen.width;
+        int height = screen.height;
+        setBounds(0,0,width,height);
+
+        // Adding background
+        ImageIcon imageIcon = new ImageIcon("Images/PesticideTrackerHome.png");
+        Image image = imageIcon.getImage().getScaledInstance(width, height, Image.SCALE_DEFAULT);
+        ImageIcon backgroundImage = new ImageIcon(image);
+        JLabel bgImg = new JLabel(backgroundImage);
+        bgImg.setBounds(0, 0, width, height-60);
+
+        add(bgImg);
+
+        // Adding menu bar
+        JMenuBar menuBar = new JMenuBar();
+        menuBar.setBackground(Color.WHITE);
+        menuBar.setPreferredSize(new Dimension(width,60));
+        setJMenuBar(menuBar);
+
+//      Font
+        Font font = new Font("",Font.BOLD,22);
+
+        // Adding menu options
+        JMenu acc = new JMenu("Account");
+        acc.setFont(font);
+        JMenuItem loginItem = new JMenuItem("Login");
+        loginItem.setFont(font);
+        loginItem.setBackground(Color.WHITE);
+        loginItem.setForeground(Color.BLUE);
+        loginItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new Login().setVisible(true);
+            }
+        });
+        JMenuItem signupItem = new JMenuItem("Signup");
+        signupItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new SignUp().setVisible(true);
+            }
+        });
+        JMenuItem forgot = new JMenuItem("Forgot Password");
+        forgot.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new ForgotPassword().setVisible(true);
+            }
+        });
+        acc.add(loginItem);
+        acc.add(signupItem);
+        acc.add(forgot);
+
+        Font f = new Font("",Font.PLAIN,18);
+
+        JMenu pesticideMenu = new JMenu("Pesticide");
+        pesticideMenu.setFont(font);
+        JMenuItem addPesticideItem = new JMenuItem("Add Pesticide");
+        addPesticideItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new AddPesticide().setVisible(true);
+            }
+        });
+        addPesticideItem.setFont(f);
+        addPesticideItem.setBackground(Color.WHITE);
+        JMenuItem viewHistoryItem = new JMenuItem("View Pesticide History");
+        viewHistoryItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new ViewPesticideHistory().setVisible(true);
+            }
+        });
+        viewHistoryItem.setFont(f);
+        viewHistoryItem.setBackground(Color.WHITE);
+        JMenuItem editPesticideItem = new JMenuItem("Edit Pesticide");
+        editPesticideItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new EditPesticide().setVisible(true);
+            }
+        });
+        editPesticideItem.setFont(f);
+        editPesticideItem.setBackground(Color.WHITE);
+        pesticideMenu.add(addPesticideItem);
+        pesticideMenu.add(viewHistoryItem);
+        pesticideMenu.add(editPesticideItem);
+
+        JMenu aboutMenu = new JMenu("About");
+        JMenuItem abt = new JMenuItem("open-about");
+        aboutMenu.add(abt);
+        abt.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                setVisible(false);
+                new About().setVisible(true);
+            }
+        });
+        aboutMenu.setFont(font);
+
+        menuBar.add(acc);
+        menuBar.add(pesticideMenu);
+        menuBar.add(aboutMenu);
+
+//        --
+        JLabel title = new JLabel("Pesticide Tracker - Safe and Smart Pesticide Management");
+        title.setFont(new Font("Arial", Font.BOLD, 48));
+        title.setForeground(Color.WHITE);
+        title.setBounds(60, 70, width, 100);
+        bgImg.add(title);
+
+        JSeparator separator = new JSeparator();
+        separator.setBounds(60, 160, width-150, 5);
+        separator.setForeground(Color.WHITE);
+        bgImg.add(separator);
+
+        JLabel slogan = new JLabel("Protect your crops, protect your health - let Pesticide Tracker be your strength.");
+        slogan.setFont(new Font("Arial", Font.BOLD, 30));
+        slogan.setForeground(Color.WHITE);
+        slogan.setBounds(60, 140, width, 100);
+        bgImg.add(slogan);
+
+        JButton solution = new JButton("Know Pesticide Solution");
+        solution.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new PesticideSolution().setVisible(true);
+            }
+        });
+        solution.setBounds(60, 230, 250, 40);
+        solution.setForeground(Color.BLACK);
+        solution.setBackground(Color.WHITE);
+        solution.setFont(f);
+        bgImg.add(solution);
+
+        // Display the window
+        setVisible(true);
+    }
+
+    public static void main(String[] args) {
+        DashBoard dashboard = new DashBoard();
+        dashboard.setVisible(true);
+    }
+}

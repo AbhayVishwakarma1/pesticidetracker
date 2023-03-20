@@ -1,0 +1,128 @@
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import javax.imageio.ImageIO;
+import javax.swing.*;
+
+public class Login extends JFrame implements ActionListener {
+
+    private JLabel username, password;
+    private JTextField userField;
+    private JPasswordField passField;
+    private JButton log_bt1,sign_bt2,forgot_bt3;
+
+    public Login() {
+        setTitle("Login Page");
+        setBounds(0,100,800, 500);
+        setResizable(false);
+//        setDefaultCloseOperation(EXIT_ON_CLOSE);
+
+        // Load background image
+        try {
+            Image backgroundImage = ImageIO.read(new File("Graphics_Icons/Login_page.png"));
+            Image scaledBackground = backgroundImage.getScaledInstance(getWidth(), getHeight(), Image.SCALE_SMOOTH);
+            setContentPane(new JPanel(new BorderLayout()) {
+                @Override
+                public void paintComponent(Graphics g) {
+                    super.paintComponent(g);
+                    g.drawImage(scaledBackground, 0, 0, null);
+                }
+            });
+        } catch (Exception e) {
+            System.out.println("Error loading background image: " + e.getMessage());
+        }
+
+        // Add components
+        JPanel panel = new JPanel(null);
+        panel.setOpaque(false);
+        add(panel);
+
+        username = new JLabel("user name: ");
+        username.setBounds(124, 100, 95, 24);
+        username.setFont(new Font("Arial", Font.BOLD, 16));
+        panel.add(username);
+
+        password = new JLabel("password: ");
+        password.setBounds(124, 140, 95, 24);
+        password.setFont(new Font("Arial", Font.BOLD, 16));
+        panel.add(password);
+
+        userField = new JTextField();
+        userField.setBounds(224, 100, 150, 24);
+        panel.add(userField);
+
+        passField = new JPasswordField();
+        passField.setBounds(224, 140, 150, 24);
+        panel.add(passField);
+
+        log_bt1 = new JButton("Login");
+        log_bt1.addActionListener(this);
+        // --
+        log_bt1.setBounds(124, 180, 120, 28);
+        log_bt1.setForeground(Color.WHITE);
+        log_bt1.setBackground(Color.GREEN);
+        panel.add(log_bt1);
+
+        sign_bt2 = new JButton("Sign-up");
+        sign_bt2.addActionListener(this);
+        // --
+        sign_bt2.setBounds(250, 180, 120, 28);
+        sign_bt2.setForeground(Color.WHITE);
+        sign_bt2.setBackground(Color.RED);
+        panel.add(sign_bt2);
+
+        forgot_bt3 = new JButton("Forgot Password");
+        forgot_bt3.addActionListener(this);
+        // --
+        forgot_bt3.setBounds(145, 225, 200, 28);
+        forgot_bt3.setForeground(Color.WHITE);
+        forgot_bt3.setBackground(Color.BLUE);
+        panel.add(forgot_bt3);
+
+        //setVisible(true);
+    }
+
+    public static void main(String[] args) {
+        new Login().setVisible(true);
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent event) {
+        if(event.getSource() == log_bt1){
+            Boolean status = false;
+            try{
+                Conn conn = new Conn();
+                String sql = "Select * from user_table where user_name=? and password=?";
+                PreparedStatement pre = new Conn().conn.prepareStatement(sql);
+
+                pre.setString(1, userField.getText());
+
+                 pre.setString(2, String.valueOf(passField.getPassword()));
+
+                 ResultSet rs = pre.executeQuery();
+                 if (rs.next()==true) {
+                     this.setVisible(false);
+                     JOptionPane.showMessageDialog(null, "Login successful!");
+                     new DashBoard().setVisible(true);
+                 } else
+                     JOptionPane.showMessageDialog(null, "Invalid Login or Password!");
+
+            }catch (Exception e){
+                // --
+            }
+        }
+        // SECOND BUTTON
+        if(event.getSource()== sign_bt2){
+            this.setVisible(false);
+            new SignUp().setVisible(true);
+        }
+        // THIRD BUTTON
+        if(event.getSource()== forgot_bt3){
+            this.setVisible(false);
+            new ForgotPassword().setVisible(true);
+        }
+    }
+}

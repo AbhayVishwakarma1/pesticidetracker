@@ -1,0 +1,63 @@
+import javax.swing.*;
+
+public class EditPesticide extends JFrame {
+
+    // Components
+    private JLabel nameLabel, typeLabel, quantityLabel;
+    private JTextField nameField, typeField, quantityField;
+    private JButton saveButton, cancelButton;
+
+    public EditPesticide() {
+        // Set up the window
+        setTitle("Edit Pesticide");
+        setSize(400, 200);
+//        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
+
+        // Create the components
+        nameLabel = new JLabel("Name:");
+        typeLabel = new JLabel("Type:");
+        quantityLabel = new JLabel("Quantity:");
+        nameField = new JTextField(20);
+        typeField = new JTextField(20);
+        quantityField = new JTextField(10);
+        saveButton = new JButton("Save");
+        cancelButton = new JButton("Cancel");
+
+        // Create a panel for the input fields
+        JPanel inputPanel = new JPanel();
+        BoxLayout boxLayout = new BoxLayout(inputPanel, BoxLayout.Y_AXIS);
+        inputPanel.setLayout(boxLayout);
+
+        inputPanel.add(nameLabel);
+        inputPanel.add(nameField);
+        inputPanel.add(Box.createVerticalStrut(10));
+        inputPanel.add(typeLabel);
+        inputPanel.add(typeField);
+        inputPanel.add(Box.createVerticalStrut(10));
+        inputPanel.add(quantityLabel);
+        inputPanel.add(quantityField);
+        inputPanel.add(Box.createVerticalStrut(10));
+
+        // Create a panel for the buttons
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.add(saveButton);
+        buttonPanel.add(cancelButton);
+
+        // Create a panel for both input and button panel
+        JPanel mainPanel = new JPanel();
+        mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
+        mainPanel.add(inputPanel);
+        mainPanel.add(buttonPanel);
+
+        // Add the main panel to the window
+        add(mainPanel);
+
+        // Show the window
+        setVisible(true);
+    }
+
+    public static void main(String[] args) {
+        EditPesticide editPesticide = new EditPesticide();
+    }
+}

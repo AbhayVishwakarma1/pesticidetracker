@@ -1,0 +1,156 @@
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+import java.sql.*;
+import javax.swing.border.*;
+
+public class SignUp extends JFrame implements ActionListener{
+
+    private JPanel contentPane;
+    private JLabel userName,name,password,sec_question,answer;
+
+    private JTextField un_textF,name_textF,ans_textF;
+    private JPasswordField pass_Field;
+    private JComboBox ques_Field;
+    private JButton sign_bt1,bt2;
+
+    public SignUp(){
+        // create GUI components
+        setTitle("SignUp Page");
+        setBounds(0,0,700,406);
+
+        contentPane = new JPanel();
+        contentPane.setBorder(new EmptyBorder(5,70,5,20));
+        setContentPane(contentPane);
+        contentPane.setBackground(Color.white);
+        contentPane.setLayout(null);
+
+        userName = new JLabel("user name: ");
+        userName.setForeground(Color.DARK_GRAY);
+        userName.setFont(new Font("Tahoma",Font.BOLD,14));
+        userName.setBounds(99,86,92,26);
+        contentPane.add(userName);
+
+        name = new JLabel("full name: ");
+        name.setForeground(Color.DARK_GRAY);
+        name.setFont(new Font("Tahoma",Font.BOLD,14));
+        name.setBounds(99,123,92,26);
+        contentPane.add(name);
+
+        password = new JLabel("password: ");
+        password.setForeground(Color.DARK_GRAY);
+        password.setFont(new Font("Tahoma",Font.BOLD,14));
+        password.setBounds(99,160,92,26);
+        contentPane.add(password);
+
+        answer = new JLabel("answer: ");
+        answer.setForeground(Color.DARK_GRAY);
+        answer.setFont(new Font("Tahoma",Font.BOLD,14));
+        answer.setBounds(99,234,92,26);
+        contentPane.add(answer);
+
+        sec_question = new JLabel("security question: ");
+        sec_question.setForeground(Color.DARK_GRAY);
+        sec_question.setFont(new Font("Tahoma",Font.BOLD,14));
+        sec_question.setBounds(99,197,140,26);
+        contentPane.add(sec_question);
+
+        ques_Field = new JComboBox();
+        ques_Field.setModel(new DefaultComboBoxModel(new String[] {
+                "Your NickName?", "Your Lucky Number?",
+                "Your child SuperHero?", "Your childhood Name ?" }));
+        ques_Field.setBounds(265, 202, 148, 20);
+        contentPane.add(ques_Field);
+
+        un_textF = new JTextField();
+        un_textF.setBounds(265, 91, 148, 20);
+        contentPane.add(un_textF);
+        un_textF.setColumns(10);
+
+        name_textF = new JTextField();
+        name_textF.setColumns(10);
+        name_textF.setBounds(265, 128, 148, 20);
+        contentPane.add(name_textF);
+
+        ans_textF = new JTextField();
+        ans_textF.setColumns(10);
+        ans_textF.setBounds(265, 239, 148, 20);
+        contentPane.add(ans_textF);
+
+        pass_Field = new JPasswordField();
+        //pass_Field.setText("pass**");
+        pass_Field.setColumns(10);
+        pass_Field.setBounds(265, 165, 148, 20);
+        contentPane.add(pass_Field);
+
+        sign_bt1 = new JButton("Create");
+        //
+        sign_bt1.addActionListener(this);
+        sign_bt1.setFont(new Font("Tahoma", Font.BOLD, 16));
+        sign_bt1.setBounds(140, 289, 100, 30);
+        sign_bt1.setBackground(Color.BLACK);
+        sign_bt1.setForeground(Color.WHITE);
+        contentPane.add(sign_bt1);
+
+        bt2 = new JButton("Back");
+        //
+        bt2.addActionListener(this);
+        bt2.setFont(new Font("Tahoma", Font.BOLD, 13));
+        bt2.setBounds(300, 289, 100, 30);
+        bt2.setBackground(Color.BLACK);
+        bt2.setForeground(Color.WHITE);
+        contentPane.add(bt2);
+
+        JPanel panel = new JPanel();
+        panel.setForeground(new Color(34, 139, 34));
+        panel.setBorder(new TitledBorder(new LineBorder(new Color(
+                128, 128, 0), 2), "Create-Account",
+                TitledBorder.LEADING, TitledBorder.TOP, null
+                , new Color(34, 139, 34)));
+        panel.setBounds(31, 30, 640, 310);
+        panel.setBackground(Color.WHITE);
+        contentPane.add(panel);
+
+
+    }
+    public static void main(String[] args) {
+        SignUp signup = new SignUp();
+        signup.setVisible(true);
+    }
+    @Override
+    public void actionPerformed(ActionEvent event) {
+        //
+        try{
+             Conn conn = new Conn();
+
+            if(event.getSource() == sign_bt1){
+                String username = un_textF.getText();
+                String name = name_textF.getText();
+                String pass = new String(pass_Field.getPassword());
+                String ques = (String) ques_Field.getSelectedItem();
+                String answer = ans_textF.getText();
+
+                // Check if any field is empty
+                if (username.isEmpty() || name.isEmpty() || pass.isEmpty() || answer.isEmpty()) {
+                    JOptionPane.showMessageDialog(null, "Please fill in all required fields");
+                    return;
+                }
+
+                String sql = "insert into user_table values('"+username+"', '"+name+"', '"+pass+"', '"+ques+"', '"+answer+"')";
+                conn.st.executeUpdate(sql);
+                JOptionPane.showMessageDialog(null, "Account Created Successfully!");
+
+                new Login().setVisible(true);
+                this.setVisible(false);
+            }
+
+            if(event.getSource() == bt2){
+                this.setVisible(false);
+                new Login().setVisible(true);
+            }
+
+        }catch (Exception abc){
+            // --
+        }
+    }
+}

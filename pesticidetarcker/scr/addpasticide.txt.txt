@@ -1,0 +1,128 @@
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+
+public class AddPesticide extends JFrame implements ActionListener{
+    // Declare all necessary Swing components
+    private JLabel pesticideTypeLabel;
+    private JTextField pesticideTypeField;
+    private JLabel amountUsedLabel;
+    private JTextField amountUsedField;
+    private JLabel dateLabel;
+    private JTextField dateField;
+    private JLabel notesLabel;
+    private JTextArea notesArea;
+    private JButton submitButton;
+
+
+
+    public AddPesticide() {
+        // Set up the JFrame properties
+        setTitle("Add Pesticide Application");
+        setSize(400, 300);
+//        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
+
+        // Create the JPanel to hold all components
+        JPanel panel = new JPanel(new GridBagLayout());
+        GridBagConstraints constraints = new GridBagConstraints();
+        constraints.insets = new Insets(5, 5, 5, 5);
+
+        // Add the pesticide type label and field
+        pesticideTypeLabel = new JLabel("Pesticide Type:");
+        constraints.gridx = 0;
+        constraints.gridy = 0;
+        panel.add(pesticideTypeLabel, constraints);
+
+        pesticideTypeField = new JTextField(20);
+        constraints.gridx = 1;
+        constraints.gridy = 0;
+        panel.add(pesticideTypeField, constraints);
+
+        // Add the amount used label and field
+        amountUsedLabel = new JLabel("Amount Used:");
+        constraints.gridx = 0;
+        constraints.gridy = 1;
+        panel.add(amountUsedLabel, constraints);
+
+        amountUsedField = new JTextField(20);
+        constraints.gridx = 1;
+        constraints.gridy = 1;
+        panel.add(amountUsedField, constraints);
+
+        // Add the date label and field
+        dateLabel = new JLabel("Date of Application:");
+        constraints.gridx = 0;
+        constraints.gridy = 2;
+        panel.add(dateLabel, constraints);
+
+        dateField = new JTextField(20);
+        constraints.gridx = 1;
+        constraints.gridy = 2;
+        panel.add(dateField, constraints);
+
+        // Add the notes label and area
+        notesLabel = new JLabel("Notes:");
+        constraints.gridx = 0;
+        constraints.gridy = 3;
+        panel.add(notesLabel, constraints);
+
+        notesArea = new JTextArea(5, 20);
+        notesArea.setLineWrap(true);
+        notesArea.setWrapStyleWord(true);
+        JScrollPane scrollPane = new JScrollPane(notesArea);
+        constraints.gridx = 1;
+        constraints.gridy = 3;
+        panel.add(scrollPane, constraints);
+
+        // Add the submit button
+        submitButton = new JButton("Submit");
+        constraints.gridx = 0;
+        constraints.gridy = 4;
+        constraints.gridwidth = 2;
+        constraints.anchor = GridBagConstraints.CENTER;
+        panel.add(submitButton, constraints);
+
+        // Add the panel to the JFrame and set it visible
+        add(panel);
+
+        setVisible(true);
+    }
+
+    public static void main(String[] args) {
+        new AddPesticide().setVisible(true);
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent event) {
+        //
+        try{
+            Conn conn = new Conn();
+
+            String pest = pesticideTypeField.getText();
+            String amt = amountUsedField.getText();
+            String date = dateField.getText();
+            String note = notesArea.getText();
+
+            if (event.getSource() == submitButton) {
+
+                String query ="INSERT INTO pesticideTable values('"+pest+"','"+amt+"', '"+date+"', '"+note+"')";
+
+                // Check if any field is empty
+                if (pest.isEmpty() || amt.isEmpty()) {
+                    JOptionPane.showMessageDialog(null, "Please fill in all required fields");
+                    return;
+                }
+
+                conn.st.executeUpdate(query);
+                JOptionPane.showMessageDialog(null, "Successfully Added!");
+
+                this.setVisible(false);
+            }
+        }catch (Exception abc){
+            // --
+        }
+    }
+}

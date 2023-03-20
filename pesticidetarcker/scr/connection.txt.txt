@@ -1,0 +1,16 @@
+import java.sql.*;
+
+public class Conn{
+    Connection conn;
+    Statement st;
+    public Conn(){
+        // constructor
+        try{
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            conn = DriverManager.getConnection("jdbc:mysql:///pesticideTracker","root","Viraj@2212");
+            st =conn.createStatement();
+        } catch(Exception e){
+            System.out.println(e);
+        }
+    }
+}

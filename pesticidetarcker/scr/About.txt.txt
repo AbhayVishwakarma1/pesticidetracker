@@ -1,0 +1,71 @@
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+public class About extends JFrame {
+    public About() {
+        setTitle("About Pesticide Tracker");
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        // Setting screen size to full
+        Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
+        int width = screen.width;
+        int height = screen.height;
+        setBounds(0, 0, width, height);
+
+        // Adding background
+        ImageIcon imageIcon = new ImageIcon("Images/PesticideTrackerHome.png");
+        Image image = imageIcon.getImage().getScaledInstance(width, height, Image.SCALE_DEFAULT);
+        ImageIcon backgroundImage = new ImageIcon(image);
+        JLabel bgImg = new JLabel(backgroundImage);
+        bgImg.setBounds(0, 0, width, height - 60);
+
+        add(bgImg);
+
+        // Adding title label
+        JLabel titleLabel = new JLabel("About Pesticide Tracker");
+        titleLabel.setFont(new Font("Arial", Font.BOLD, 48));
+        titleLabel.setForeground(Color.WHITE);
+        titleLabel.setBounds(60, 70, width, 100);
+        bgImg.add(titleLabel);
+
+//        --
+        JPanel panel = new JPanel(null);
+        panel.setBounds(60, 200, width-120, 800);
+        panel.setBackground(new Color(0,0,0,0));
+        bgImg.add(panel);
+
+// Adding description
+        JTextArea descriptionLabel = new JTextArea("Introducing Pesticide Tracker - the smart and secure way to manage pesticides for your crops. Our easy-to-use software lets you track pesticide inventory, schedule applications, and generate usage reports all in one place.\n\nWith Pesticide Tracker, you can say goodbye to the headache of managing your pesticides manually. Our intuitive interface and automated features save you time and money while providing you with the data you need to make informed decisions about your pest management strategy.\n\nBut that's not all - our commitment to security and privacy means that your data is always protected with the highest level of encryption. Plus, our compliance reporting features ensure that you're always meeting state and federal regulations.\n\nProtect your crops and your health with Pesticide Tracker - the ultimate pesticide management solution. Try it out today and see the difference for yourself.");
+        descriptionLabel.setFont(new Font("Arial", Font.PLAIN, 24));
+        descriptionLabel.setBounds(0, 0, width-120, 700);
+        descriptionLabel.setForeground(Color.WHITE);
+        descriptionLabel.setLineWrap(true);
+//        descriptionLabel.setWrapStyleWord(true);
+        descriptionLabel.setEditable(false);
+        descriptionLabel.setOpaque(false);
+        panel.add(descriptionLabel);
+
+        JButton btn = new JButton("Back");
+        btn.setBounds(width/2-100,height-250,100,30);
+        btn.setFont(new Font("",Font.BOLD,18));
+        bgImg.add(btn);
+        btn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                setVisible(false);
+                new DashBoard().setVisible(true);
+            }
+        });
+
+
+        // Display the window
+        setVisible(true);
+    }
+
+    public static void main(String[] args) {
+        About about = new About();
+        about.setVisible(true);
+    }
+}

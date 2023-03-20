@@ -1,0 +1,78 @@
+import java.awt.*;
+import java.awt.event.*;
+import java.util.Date;
+import javax.swing.*;
+
+public class PesticideSolution extends JFrame implements ActionListener {
+    private JLabel typeLabel, amountLabel, dateLabel, solutionLabel;
+    private JTextField typeTextField, amountTextField, dateTextField;
+    private JButton solutionButton;
+
+    public PesticideSolution() {
+        // Create the UI components
+        typeLabel = new JLabel("Pesticide Type:");
+        amountLabel = new JLabel("Amount:");
+        dateLabel = new JLabel("Date (yyyy-mm-dd):");
+        solutionLabel = new JLabel("");
+        typeTextField = new JTextField(20);
+        amountTextField = new JTextField(20);
+        dateTextField = new JTextField(20);
+        solutionButton = new JButton("Get Solution");
+        solutionButton.addActionListener(this);
+
+        // Create the panel and add the components to it
+        JPanel panel = new JPanel(new GridLayout(4, 2));
+        panel.add(typeLabel);
+        panel.add(typeTextField);
+        panel.add(amountLabel);
+        panel.add(amountTextField);
+        panel.add(dateLabel);
+        panel.add(dateTextField);
+        panel.add(solutionButton);
+        panel.add(solutionLabel);
+
+        // Set the panel properties
+        panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        panel.setPreferredSize(new Dimension(400, 150));
+
+        // Set the frame properties
+        setTitle("Pesticide Solution");
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setContentPane(panel);
+        pack();
+        setLocationRelativeTo(null);
+        setVisible(true);
+    }
+
+    public void actionPerformed(ActionEvent e) {
+        // Get the input values
+        String pesticideType = typeTextField.getText();
+        double amount = Double.parseDouble(amountTextField.getText());
+        Date date = java.sql.Date.valueOf(dateTextField.getText());
+
+        // Choose the right pesticide
+        String pesticideChoice = "Based on the target pest and the application site, it is recommended to use " + pesticideType + " pesticide.";
+
+        // Apply at the right time
+        String timingRecommendation = "Apply the pesticide during the target pest's active growth stage and avoid applying during adverse weather conditions such as high winds or heavy rain.";
+
+        // Use the correct dosage
+        String dosageRecommendation = "Apply the pesticide at the recommended dosage as per the label instructions.";
+
+        // Follow label instructions
+        String labelInstructions = "Always follow the label instructions for the pesticide being used. The label provides important information on proper application rates, timing, and safety precautions.";
+
+        // Monitor results
+        String resultMonitoring = "After applying the pesticide, monitor the results to ensure that it is effective. If the pesticide is not providing the desired control, it may be necessary to re-evaluate the application strategy and consider alternative control measures.";
+
+        // Build the solution string
+        String solution = pesticideChoice + "\n" + timingRecommendation + "\n" + dosageRecommendation + "\n" + labelInstructions + "\n" + resultMonitoring;
+
+        // Display the solution
+        solutionLabel.setText(solution);
+    }
+
+    public static void main(String[] args) {
+        new PesticideSolution();
+    }
+}
